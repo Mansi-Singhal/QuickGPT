@@ -7,7 +7,7 @@ export const stripeWebhooks = async (request, response) => {
     const sig = request.headers["stripe-signature"]
     let event;
     try {
-        event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_KEY)
+        event = stripe.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
 
     } catch (error) {
         return response.status(400).send(`Webhook Error: ${error.message}`)
@@ -42,7 +42,7 @@ export const stripeWebhooks = async (request, response) => {
                 console.log("Unhandled event type: ", event.type);
                 break;
         }
-        response.json({received: true})
+        response.json({ received: true })
 
     } catch (error) {
         console.error("Webhook processing error: ", error);
